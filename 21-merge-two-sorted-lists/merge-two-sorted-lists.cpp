@@ -8,6 +8,7 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+ //more opti/ simplified
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
@@ -17,26 +18,32 @@ public:
         while (list1 != NULL && list2 != NULL) {
             if (list1->val <= list2->val) {
                  tail->next = list1;
-                 tail = tail->next;
                 list1= list1->next;
             } else {
                 tail->next = list2;
-                tail = tail->next;
                 list2= list2->next;
             }
+            tail = tail->next; //to move tail
         }
         // for reaming
-        while (list1 != NULL) {
-             tail->next = list1;
-             tail = tail->next; //to move tail
-            list1= list1->next;
-        }
-        while (list2 != NULL) {
+        // while (list1 != NULL) {
+        //      tail->next = list1;
+             
+        //     list1= list1->next;
+        // }
+        // while (list2 != NULL) {
             
+        //     tail->next = list2;
+        //     tail = tail->next;
+        //     list2 = list2->next;
+        // }
+
+         if (list1) {
+            tail->next = list1;
+        } else {
             tail->next = list2;
-            tail = tail->next;
-            list2 = list2->next;
         }
+
 
         //retrun 
         return dummy->next;     //as first node is -1
