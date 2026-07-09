@@ -17,23 +17,43 @@ public:
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-        unordered_map<Node*, Node*> mp;
+        if(head == NULL){
+            return NULL;
+        }
         Node* temp = head;
 
-        //1.store in map
-        while(temp != NULL){
-            mp[temp] = new Node(temp->val);
-            temp= temp->next;
+        while (temp != NULL) {
+            Node* copy = new Node(temp->val);
+            copy->next = temp->next; // store oringial B(not overwirte)
+
+            temp->next = copy;
+
+            // move to next
+            temp = copy->next;
         }
 
-        //2.travser to connect
         Node* curr = head;
-        while(curr != NULL){
-            mp[curr]->next = mp[curr->next];
-            mp[curr]->random = mp[curr->random];
-            
-            curr= curr->next;
+        while (curr != NULL) {
+            if (curr->random != NULL) {
+                curr->next->random = curr->random->next;
+            }
+
+            curr = curr->next->next;
         }
-        return mp[head];
+
+        //spearte A and A`
+        curr = head; //A
+        Node* copyHead = head->next;    //A'
+        while(curr != NULL){
+            Node* copy = curr->next;
+
+            curr->next = copy->next; //restore oringinal ll
+
+            if(copy->next != NULL){
+                copy->next = copy->next->next;
+            }
+            curr = curr->next;
+        }
+        return copyHead;
     }
 };
