@@ -1,0 +1,58 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode* dummy = new ListNode(-1);
+        ListNode* tail = dummy; // not null**
+
+        while (list1 != NULL && list2 != NULL) {
+            if (list1->val < list2->val) {
+                tail->next = list1;
+                list1 = list1->next;
+            } else {
+                tail->next = list2;
+                list2 = list2->next;
+            }
+            tail = tail->next;
+        }
+
+        if (list1 != NULL) {
+            tail->next = list1;
+            list1 = list1->next;
+            tail = tail->next;
+        }
+        if (list2 != NULL) {
+            tail->next = list2;
+            list2 = list2->next;
+            tail = tail->next;
+        }
+
+        return dummy->next;
+    }
+
+    ListNode* partiation(int start,int end,vector<ListNode*>& lists){
+        if(start>end) return NULL;
+        if(start == end) return lists[start];
+
+        int mid = start+(end-start)/2;
+        ListNode* L1 = partiation(start,mid,lists);
+        ListNode* L2 = partiation(mid+1,end,lists);
+
+        return mergeTwoLists(L1,L2);
+    }
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        int k= lists.size();
+        if(k==0) return NULL;
+
+        return partiation(0,k-1,lists);
+    }
+};
