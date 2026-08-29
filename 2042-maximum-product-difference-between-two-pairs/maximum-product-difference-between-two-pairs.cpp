@@ -1,13 +1,33 @@
 class Solution {
 public:
-    int maxProductDifference(vector<int>& nums) {
-        int n=nums.size();
-        sort(nums.rbegin(),nums.rend());
-        int w = nums[0];
-        int x = nums[1];
-        int y = nums[n-1];
-        int z = nums[n-2];
+    int maxProductDifference(vector<int>& arr) {
+        int n=arr.size();
+        int high =INT_MIN;
+        int sec_high =INT_MIN;
+        int low =INT_MAX;
+        int sec_low =INT_MAX;
 
-        return ((w*x) - (y*z));
+        for(int i=0;i<n;i++){
+            if(arr[i]>high){
+                sec_high = high;
+                high = arr[i];
+            }
+            else if(arr[i]>sec_high ){
+                sec_high = arr[i];
+            }
+        }
+
+        
+        for(int i=0;i<n;i++){
+            if(arr[i]<low){
+                sec_low = low;
+                low = arr[i];
+            }
+            else if(arr[i]<sec_low ){
+                sec_low = arr[i];
+            }
+        }
+
+        return ((high*sec_high) - (low*sec_low));
     }
 };
